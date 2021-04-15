@@ -17,8 +17,6 @@
 #include <map>
 #include <memory>
 
-namespace chronos::internal
-{
 template <typename TBasePtr, typename... Args>
 class Factory final
 {
@@ -95,7 +93,7 @@ public:
         TFactory::instance()->registerObjectFactory(name, create);
     }
 };
-}  // namespace chronos::internal
+
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define PRODUCT_CLASSNAME(product) \
