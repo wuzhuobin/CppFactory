@@ -49,7 +49,7 @@ public:
         auto it = mBuilderRegistry.find(name);
         if (it != mBuilderRegistry.end())
         {
-            instance = it->second(std::move(args)...);
+            instance = it->second(std::forward<Args>(args)...);
         }
         return instance;
     }
