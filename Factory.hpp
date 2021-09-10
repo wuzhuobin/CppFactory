@@ -43,13 +43,18 @@ public:
         return (mBuilderRegistry.find(name) != mBuilderRegistry.end());
     }
 
-    [[nodiscard]] TBasePtr create(const std::string& name, Args&&... args) const
+    template <typename... SameArgs>
+    [[nodiscard]] TBasePtr create(const std::string& name, SameArgs&&... args) const
     {
+        // In class template argument deduction, template parameter of a class template is never a forwarding reference.
+        // So it has to be used as function template argument.
+        static_assert(std::is_same<TBuilder, std::function<TBasePtr(SameArgs...)>>::value,
+                      "Input arguments types should matched.");
         TBasePtr instance = nullptr;
         auto it = mBuilderRegistry.find(name);
         if (it != mBuilderRegistry.end())
         {
-            instance = it->second(std::forward<Args>(args)...);
+            instance = it->second(std::forward<SameArgs>(args)...);
         }
         return instance;
     }
